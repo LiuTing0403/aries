@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Route, Switch} from 'react-router-dom'
 import {Menu, Icon, Layout} from 'antd'
+
+import CreateForm from './create'
 
 import './styles/home.css'
 
@@ -36,6 +38,7 @@ export default class Home extends PureComponent {
     )
   }
   render() {
+    console.log(this.props.match)
     return (
       <div className='home'>
         <Layout>
@@ -44,7 +47,11 @@ export default class Home extends PureComponent {
           </Header>
           <Layout>
             <Sider>{this.renderSider()}</Sider>
-            <Content></Content>
+            <Content>
+              <Switch>
+                <Route path={`${this.props.match.url}create`} component={CreateForm}/>
+              </Switch>
+            </Content>
           </Layout>
         </Layout>
       </div>

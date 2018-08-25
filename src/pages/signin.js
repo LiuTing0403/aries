@@ -12,7 +12,9 @@ class SignIn extends PureComponent {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        window.G.history.push('/home')
+        window.fetch('url')
+        .then(res => res.json())
+        .then(res => console.log(res))
       }
     });
   }
