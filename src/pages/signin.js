@@ -12,7 +12,10 @@ class SignIn extends PureComponent {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        window.fetch('url')
+        window.fetch('url', {
+          method: 'POST',
+          body: JSON.stringify(values)
+        })
         .then(res => res.json())
         .then(res => console.log(res))
       }
