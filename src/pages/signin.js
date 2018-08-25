@@ -14,6 +14,11 @@ class SignIn extends PureComponent {
         console.log('Received values of form: ', values);
         window.fetch('url', {
           method: 'POST',
+          mode: 'no-cors',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }),
           body: JSON.stringify(values)
         })
         .then(res => res.json())
