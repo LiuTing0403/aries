@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.8.2",
+    "history": "^4.7.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-router": "^4.3.1",
@@ -18,7 +19,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "http://liuting0403.github.io/aries",
+  "homepage": "https://liuting0403.github.io/aries",
   "devDependencies": {
     "gh-pages": "^1.2.0"
   }

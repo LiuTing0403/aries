@@ -12,6 +12,7 @@ class SignIn extends PureComponent {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        window.G.history.push('/home')
       }
     });
   }
@@ -20,7 +21,7 @@ class SignIn extends PureComponent {
     return (
       <div className='signIn'>
         <Form onSubmit={this.handleSubmit.bind(this)} className='signInForm'>
-          <div>会议管理系统</div>
+          <h2>会议管理系统</h2>
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{required: true, message: 'Please input your username!'}]
