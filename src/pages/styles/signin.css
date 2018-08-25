@@ -1,0 +1,18 @@
+.signIn {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  position: relative;
+}
+.signInForm {
+  width: 440px;
+  height: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -250px;
+  margin-left: -220px;
+}
+.loginButton {
+  width: 100%
+}
