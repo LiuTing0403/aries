@@ -3,6 +3,8 @@ import {Link, Route, Switch} from 'react-router-dom'
 import {Menu, Icon, Layout} from 'antd'
 
 import CreateForm from './create'
+import AllHistory from './history'
+import Detail from './detail'
 
 import './styles/home.css'
 
@@ -38,7 +40,7 @@ export default class Home extends PureComponent {
     )
   }
   render() {
-    console.log(this.props.match)
+    console.log(this.props.match, this.props.location.pathname)
     return (
       <div className='home'>
         <Layout>
@@ -50,6 +52,8 @@ export default class Home extends PureComponent {
             <Content>
               <Switch>
                 <Route path={`${this.props.match.url}create`} component={CreateForm}/>
+                <Route path={`${this.props.match.url}all`} component={AllHistory} />
+                <Route path={`${this.props.match.url}confluence/:id`} component={Detail} />
               </Switch>
             </Content>
           </Layout>
