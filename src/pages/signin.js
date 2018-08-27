@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react'
 import {Form, Input, Button, Icon} from 'antd'
+import {login} from '../libs/api'
 
 import './styles/signin.css'
 
@@ -12,19 +13,10 @@ class SignIn extends PureComponent {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        window.G.history.push('/create')
-        // window.fetch('url', {
-        //   method: 'POST',
-        //   mode: 'no-cors',
-        //   headers: new Headers({
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json',
-        //     'Access-Control-Allow-Origin': '*'
-        //   }),
-        //   body: JSON.stringify(values)
-        // })
-        // .then(res => res.json())
-        // .then(res => console.log(res))
+        login(values)
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(error => console.log(error))
       }
     });
   }
