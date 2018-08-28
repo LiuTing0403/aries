@@ -1,7 +1,13 @@
 import React, {PureComponent} from 'react'
 import {Table} from 'antd'
 import {Link} from 'react-router-dom'
+import {getConfluenceList} from '../libs/api'
 export default class ConfluenceList extends PureComponent {
+  componentDidMount() {
+    getConfluenceList().then(res => {
+      console.log(res)
+    })
+  }
   get columns() {
     return [{
     title: '会议名称',

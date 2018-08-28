@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {Form, Input, Button, Icon} from 'antd'
+import {Form, Input, Button, Icon, Modal, message} from 'antd'
 import {login} from '../libs/api'
 
 import './styles/signin.css'
@@ -14,8 +14,17 @@ class SignIn extends PureComponent {
       if (!err) {
         console.log('Received values of form: ', values);
         login(values)
-        .then(res => res.json())
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res)
+          if (res.status === 'success') {
+            const token = res.auth_token
+            window.localStorage.setItem('token', token)
+            window.G.history.push('/create')
+            message.success("登录成功")
+          } else {
+            Modal.error({title: res.message})
+          }
+        })
         .catch(error => console.log(error))
       }
     });

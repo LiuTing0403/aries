@@ -5,6 +5,8 @@ import {Menu, Icon, Layout} from 'antd'
 import CreateForm from './create'
 import AllHistory from './history'
 import Detail from './detail'
+import Setting from './setting'
+import {logout} from '../libs/api'
 
 import './styles/home.css'
 
@@ -12,6 +14,13 @@ const MenuItem = Menu.Item
 const {Header, Content, Sider} = Layout
 
 export default class Home extends PureComponent {
+  signOut() {
+    logout().then(res => {
+      console.log(res)
+      window.localStorage.removeItem('token')
+      window.G.history.replace('/signin')
+    })
+  }
   renderSider() {
     return (
       <div className='sideMenu'>
@@ -31,11 +40,17 @@ export default class Home extends PureComponent {
               <span>会议列表</span>
             </Link>
           </MenuItem>
+          <MenuItem key='/setting'>
+            <Link to='/setting'>
+              <Icon type='setting' />
+              <span>重置密码</span>
+            </Link>
+          </MenuItem>
         </Menu>
-        <Link to='/signin' className='exitBtn'>
+        <div className='exitBtn' onClick={this.signOut}>
           <Icon type="logout" />
           <span>退出登录</span>
-        </Link>
+        </div>
       </div>
     )
   }
@@ -54,6 +69,7 @@ export default class Home extends PureComponent {
                 <Route path={`${this.props.match.url}create`} component={CreateForm}/>
                 <Route path={`${this.props.match.url}all`} component={AllHistory} />
                 <Route path={`${this.props.match.url}confluence/:id`} component={Detail} />
+                <Route path={`${this.props.match.url}setting`} component={Setting} />
               </Switch>
             </Content>
           </Layout>

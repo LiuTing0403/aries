@@ -1,16 +1,22 @@
 import React, {PureComponent} from 'react'
 import {Form, Input, Button, DatePicker} from 'antd'
+import {createConfluence} from '../libs/api'
 
-import './styles/create.css'
+import './styles/formContent.css'
 
 const FormItem = Form.Item
 
 class CreateForm extends PureComponent {
   handleSubmit(e) {
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err, _values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', _values);
+        const values = {..._values, startAt: _values.startAt._d, signup_until: _values.signup_until._d}
+        createConfluence(values)
+        .then(res => {
+          console.log(res)
+        })
         // window.fetch('url', {
         //   method: 'POST',
         //   mode: 'no-cors',
@@ -39,7 +45,7 @@ class CreateForm extends PureComponent {
     };
     const {getFieldDecorator} = this.props.form
     return (
-      <div className='create'>
+      <div className='formContent'>
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <FormItem
             {...formItemLayout}
@@ -69,7 +75,7 @@ class CreateForm extends PureComponent {
             {...formItemLayout}
             label="Start Time"
           >
-            {getFieldDecorator('start_date', {
+            {getFieldDecorator('startAt', {
               rules: [{
                 required: true, message: 'Please input Start Date',
               }],
@@ -84,7 +90,7 @@ class CreateForm extends PureComponent {
             {...formItemLayout}
             label="End Time"
           >
-            {getFieldDecorator('end_date', {
+            {getFieldDecorator('signup_until', {
               rules: [{
                 required: true, message: 'Please input End Time',
               }],
@@ -95,7 +101,9 @@ class CreateForm extends PureComponent {
                 placeholder="Select End Time"/>
             )}
           </FormItem>
-          <Button type='primary' htmlType='submit'>创建</Button>
+          <div className='submitBtn'>
+            <Button type='primary' htmlType='submit'>创建</Button>
+          </div>
         </Form>
       </div>
     )
