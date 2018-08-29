@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
 import {Form, Input, Button, DatePicker} from 'antd'
-import {createConfluence} from '../libs/api'
+import {createconference} from '../libs/api'
 
 import './styles/formContent.css'
 
@@ -13,7 +13,7 @@ class CreateForm extends PureComponent {
       if (!err) {
         console.log('Received values of form: ', _values);
         const values = {..._values, startAt: _values.startAt._d, signup_until: _values.signup_until._d}
-        createConfluence(values)
+        createconference(values)
         .then(res => {
           console.log(res)
         })

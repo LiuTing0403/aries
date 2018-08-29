@@ -68,7 +68,7 @@ export default class Home extends PureComponent {
               <Switch>
                 <Route path={`${this.props.match.url}create`} component={CreateForm}/>
                 <Route path={`${this.props.match.url}all`} component={AllHistory} />
-                <Route path={`${this.props.match.url}confluence/:id`} component={Detail} />
+                <Route path={`${this.props.match.url}conference/:id`} component={Detail} />
                 <Route path={`${this.props.match.url}setting`} component={Setting} />
               </Switch>
             </Content>

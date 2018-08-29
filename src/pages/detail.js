@@ -1,7 +1,36 @@
 import React, {PureComponent} from 'react'
 import {Table} from 'antd'
+import {getconference, getGuestsList} from '../libs/api'
 
 export default class Detail extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      conference: {},
+      guests: [],
+      count: 0
+    }
+  }
+  componentDidMount() {
+    const id = this.props.match.params.id
+    getconference({id})
+    .then(res => {
+      if (res.status === 'success') {
+        this.setState({conference: res.conference})
+      }
+    })
+    this.getGuests(1)
+  }
+  getGuests(page) {
+    const id = this.props.match.params.id
+    console.log(id)
+    getGuestsList({id})
+    .then(res => {
+      if (res.status === 'success') {
+        this.setState({count: res.count, guests: res.items})
+      }
+    })
+  }
   get columns() {
     return [{
     title: '嘉宾姓名',
@@ -13,8 +42,8 @@ export default class Detail extends PureComponent {
     key: 'gender'
   }, {
     title: '单位',
-    dataIndex: 'company',
-    key: 'company'
+    dataIndex: 'unit',
+    key: 'unit'
   }, {
     title: '邮箱',
     dataIndex: 'email',
@@ -25,12 +54,17 @@ export default class Detail extends PureComponent {
     key: 'mobile'
   }, {
     title: '证件类型',
-    dataIndex: 'idType',
-    key: 'idType',
+    dataIndex: 'id_type',
+    key: 'id_type',
   }, {
     title: '证件号码',
-    dataIndex: 'id',
-    key: 'id',
+    dataIndex: 'id_no',
+    key: 'id_no',
+  }, {
+    title: '状态',
+    dataIndex: 'approved',
+    key: 'approved',
+    render: (text, record) => <span>{record.approved ? '已审核通过' : '待审核'}</span>
   }, {
     title: '操作',
     key: 'action',
@@ -68,13 +102,21 @@ export default class Detail extends PureComponent {
       }];
   }
   render() {
+    const {conference} = this.state
     return (
       <div className='detail'>
-        <h2>国庆招待会</h2>
-        <p>会议时间：2018-10-01</p>
-        <p>会议地点：xxxxxxx</p>
+        <h2>{conference.name}</h2>
+        <p>会议时间：{conference.startAt}</p>
+        <p>会议地点：{conference.location}}</p>
         <p>会议状态：报名中</p>
-        <Table columns={this.columns} dataSource={this.data} />
+        <Table columns={this.columns} dataSource={this.state.guests} pagination={{
+          page: this.state.page,
+          total: this.state.count,
+          onChange: (p) => {
+            this.setState({page: p})
+            this.getGuests(p)
+          }
+        }} />
       </div>
     )
   }

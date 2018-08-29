@@ -1,11 +1,25 @@
 import React, {PureComponent} from 'react'
 import {Table} from 'antd'
 import {Link} from 'react-router-dom'
-import {getConfluenceList} from '../libs/api'
-export default class ConfluenceList extends PureComponent {
+import {getconferenceList} from '../libs/api'
+export default class conferenceList extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      list: [],
+      count: 0,
+      pagination: 1
+    }
+  }
   componentDidMount() {
-    getConfluenceList().then(res => {
-      console.log(res)
+    this.getData(1)
+  }
+  getData(page) {
+    getconferenceList({page}).then(res => {
+      this.setState({
+        list: res.conferences,
+        count: res.count
+      })
     })
   }
   get columns() {
@@ -19,8 +33,12 @@ export default class ConfluenceList extends PureComponent {
     key: 'location',
   }, {
     title: '时间',
-    dataIndex: 'time',
-    key: 'time',
+    dataIndex: 'startAt',
+    key: 'startAt',
+  }, {
+    title: '报名截止时间',
+    dataIndex: 'signupUntil',
+    key: 'signupUntil'
   }, {
     title: '与会人数',
     key: 'count',
@@ -30,34 +48,21 @@ export default class ConfluenceList extends PureComponent {
     key: 'action',
     render: (text, record) => (
       <span>
-        <Link to={`/confluence/${record.key}`}>详情</Link>
+        <Link to={`/conference/${record.id}`}>详情</Link>
       </span>
     ),
   }]}
-  get data() {
-    return [{
-        key: '1',
-        name: '会议1',
-        location: 'xxx',
-        count: 122,
-        time: '2018-08-22'
-      }, {
-        key: '2',
-        name: '会议2',
-        location: 'xxx',
-        count: 123,
-        time: '2018-08-22'
-      }, {
-        key: '3',
-        name: '会议3',
-        location: 'xxx',
-        count: 344,
-        time: '2018-08-22'
-      }];
-  }
+
   render() {
     return (
-      <Table columns={this.columns} dataSource={this.data} />
+      <Table columns={this.columns} dataSource={this.state.list}
+        pagination={{
+          page: this.state.page,
+          total: this.state.count,
+          onChange: (p) => {
+            this.setState({page: p})
+            this.getData(p)
+          }}}/>
     )
   }
 }
