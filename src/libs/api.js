@@ -18,7 +18,12 @@ function get(url, params) {
     return window.fetch(baseUrl + url + query, {
         method: 'GET',
         headers,
-    }).then(res => res.json())
+    }).then(res => {
+        if (res.status === 401) {
+            window.G.history.push('/signin')
+        }
+        return res.json()
+    })
     .catch(err => console.error(err))
 }
 
@@ -32,7 +37,12 @@ function post(url, data) {
         method: 'POST',
         headers,
         body: JSON.stringify(data)
-    }).then(res => res.json())
+    }).then(res => {
+        if (res.status === 401) {
+            window.G.history.push('/signin')
+        }
+        return res.json()
+    })
     .catch(err => console.error(err))
 }
 
@@ -45,14 +55,19 @@ function del(url, params) {
     return window.fetch(baseUrl + url, {
         method: 'DELETE',
         headers,
-    }).then(res => res.json())
+    }).then(res => {
+        if (res.status === 401) {
+            window.G.history.push('/signin')
+        }
+        return res.json()
+    })
     .catch(err => console.error(err))
 }
 
 export const login = (data) => post('/auth/login', data)
 export const logout = () => post('/auth/logout')
 export const resetPassword = (data) => post('/auth/reset_password', data)
-export const createconference = (data) => post('/conference/lists', data)
+export const createConference = (data) => post('/conference/lists/', data)
 
 export const getconferenceList = (params) => get('/conference/lists/', params)
 export const getconference = ({id}) => get(`/conference/lists/${id}`)

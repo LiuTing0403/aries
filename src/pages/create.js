@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
-import {Form, Input, Button, DatePicker} from 'antd'
-import {createconference} from '../libs/api'
+import {Form, Input, Button, DatePicker, message} from 'antd'
+import {createConference} from '../libs/api'
 
 import './styles/formContent.css'
 
@@ -13,9 +13,12 @@ class CreateForm extends PureComponent {
       if (!err) {
         console.log('Received values of form: ', _values);
         const values = {..._values, startAt: _values.startAt._d, signup_until: _values.signup_until._d}
-        createconference(values)
+        createConference(values)
         .then(res => {
-          console.log(res)
+          if (typeof res.id === 'number') {
+            message.success('会议创建成功')
+            window.G.history.replace(`/conference/${res.id}`)
+          }
         })
         // window.fetch('url', {
         //   method: 'POST',

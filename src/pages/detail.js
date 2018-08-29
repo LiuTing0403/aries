@@ -23,8 +23,7 @@ export default class Detail extends PureComponent {
   }
   getGuests(page) {
     const id = this.props.match.params.id
-    console.log(id)
-    getGuestsList({id})
+    getGuestsList({id, page})
     .then(res => {
       if (res.status === 'success') {
         this.setState({count: res.count, guests: res.items})
@@ -104,10 +103,10 @@ export default class Detail extends PureComponent {
   render() {
     const {conference} = this.state
     return (
-      <div className='detail'>
+      <div className='detail' style={{padding: '20px'}}>
         <h2>{conference.name}</h2>
         <p>会议时间：{conference.startAt}</p>
-        <p>会议地点：{conference.location}}</p>
+        <p>会议地点：{conference.location}</p>
         <p>会议状态：报名中</p>
         <Table columns={this.columns} dataSource={this.state.guests} pagination={{
           page: this.state.page,
