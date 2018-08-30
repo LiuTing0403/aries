@@ -73,39 +73,12 @@ export default class Detail extends PureComponent {
       </span>
     ),
   }]}
-  get data() {
-    return [{
-        key: '1',
-        name: 'xxx',
-        gender: 'F',
-        company: 'XXXX',
-        email: 'xxx@qq.com',
-        idType: '护照',
-        id: '3456789'
-      }, {
-        key: '2',
-        name: 'xxx',
-        gender: 'F',
-        company: 'XXXX',
-        email: 'xxx@qq.com',
-        idType: '护照',
-        id: '3456789'
-      }, {
-        key: '3',
-        name: 'xxx',
-        gender: 'F',
-        company: 'XXXX',
-        email: 'xxx@qq.com',
-        idType: '护照',
-        id: '3456789'
-      }];
-  }
   render() {
     const {conference} = this.state
     return (
       <div className='detail' style={{padding: '20px'}}>
         <h2>{conference.name}</h2>
-        <p>会议时间：{conference.startAt}</p>
+        <p>会议时间：{(new Date(conference.startAt)).toLocaleString()}</p>
         <p>会议地点：{conference.location}</p>
         <p>会议状态：报名中</p>
         <Table columns={this.columns} dataSource={this.state.guests} pagination={{

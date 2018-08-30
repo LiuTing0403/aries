@@ -35,10 +35,12 @@ export default class conferenceList extends PureComponent {
     title: '时间',
     dataIndex: 'startAt',
     key: 'startAt',
+    render: (text, record) => (<span>{(new Date(record.startAt)).toLocaleString()}</span>)
   }, {
     title: '报名截止时间',
     dataIndex: 'signupUntil',
-    key: 'signupUntil'
+    key: 'signupUntil',
+    render: (text, record) => (<span>{(new Date(record.signupUntil)).toLocaleString()}</span>)
   }, {
     title: '与会人数',
     key: 'count',
