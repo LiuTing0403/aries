@@ -1,6 +1,6 @@
 import {encodeQuery} from './utils'
 
-const baseUrl = 'http://111.231.91.206:8000'
+const baseUrl = 'http://132.232.140.247:8000'
 const baseHeaders = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -46,6 +46,25 @@ function post(url, data) {
     .catch(err => console.error(err))
 }
 
+function put(url, data) {
+    const token = localStorage.getItem('token')
+    let headers = {...baseHeaders}
+    if (token) {
+        headers.Authorization = `Bearer ${token}`
+    }
+    return window.fetch(baseUrl + url, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(data)
+    }).then(res => {
+        if (res.status === 401) {
+            window.G.history.push('/signin')
+        }
+        return res.json()
+    })
+    .catch(err => console.error(err))
+}
+
 function del(url, params) {
     const token = localStorage.getItem('token')
     let headers = {...baseHeaders}
@@ -73,3 +92,6 @@ export const getconferenceList = (params) => get('/conference/lists/', params)
 export const getconference = ({id}) => get(`/conference/lists/${id}`)
 export const deleteconference = ({id}) => del(`/conference/lists/${id}`)
 export const getGuestsList = ({id, ...params}) => get(`/guests/lists/${id}/guests/`, params)
+export const getGuest = ({cfId, guestId}) => get(`/guests/lists/${cfId}/guests/${guestId}/`)
+
+export const updateGuestStatus = ({cfId, guestId, ...data}) => put(`/guests/lists/${cfId}/guests/${guestId}/`, data)

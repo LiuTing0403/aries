@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
 import {Table} from 'antd'
-import {getconference, getGuestsList} from '../libs/api'
+import {getconference, getGuestsList, updateGuestStatus} from '../libs/api'
 
 export default class Detail extends PureComponent {
   constructor(props) {
@@ -29,6 +29,11 @@ export default class Detail extends PureComponent {
         this.setState({count: res.count, guests: res.items})
       }
     })
+  }
+  updateGuestStatus(guestId, approved) {
+    const id = this.props.match.params.id
+    updateGuestStatus({cfId: id, guestId, approved})
+    .then(res => {console.log(res)})
   }
   get columns() {
     return [{
@@ -63,15 +68,12 @@ export default class Detail extends PureComponent {
     title: '状态',
     dataIndex: 'approved',
     key: 'approved',
-    render: (text, record) => <span>{record.approved ? '已审核通过' : '待审核'}</span>
-  }, {
-    title: '操作',
-    key: 'action',
-    render: () => (
-      <span>
-        <a href="javascript:;">接受</a>
-      </span>
-    ),
+    render: (text, record) => <span>
+      {record.approved ? '已审核通过' : <span>
+        <a style={{marginRight: '20px'}} onClick={(e) => {e.preventDefault(); this.updateGuestStatus(record.id, true)}}>接受</a>
+        <a onClick={(e) => {e.preventDefault(); this.updateGuestStatus(record.id, false)}}>拒绝</a>
+      </span>}
+    </span>
   }]}
   render() {
     const {conference} = this.state
